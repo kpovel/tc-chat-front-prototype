@@ -1,0 +1,22 @@
+.helper__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.restore__pass {
+    border-right: 1px solid gray;
+    padding-right: 10px;
+}
+.create__user {
+    margin-left: 10px;
+}
+.helper__wrapper a {
+    color: gray;
+    font-size: 14px;
+    text-decoration: none;
+}
+.login__wrapper h1{
+    font-size: 23px;
+    font-weight: bold;
+    color: #545353;
+}
