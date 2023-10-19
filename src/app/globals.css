@@ -69,3 +69,6 @@ body {
   font-weight: bold;
   color: #545353;
 }
+input.invalid__value {
+  border: 1px solid red;
+}
