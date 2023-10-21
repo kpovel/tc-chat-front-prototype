@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react';
-import { checkCookie, deleteCookie } from './checkCookie';
+import { checkCookie } from './checkCookie';
 
 export default function Chat() {
 
