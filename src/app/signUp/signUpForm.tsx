@@ -12,9 +12,6 @@ export interface signUpDataInterface {
 }
 
 export default function SignUpForm() {
-
-    const { push } = useRouter();
-
     const [login, setLogin] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -25,7 +22,6 @@ export default function SignUpForm() {
         const isValidate = validateInput(e.target.value, 'login');
 
         if(isValidate) {
-            
             setIsValidateLogin(true);
         } else {
             setIsValidateLogin(false)
@@ -55,14 +51,7 @@ export default function SignUpForm() {
             password
         }
 
-        const submitResponse = await signUpPostData(formDataSubmit);
-
-        console.log(submitResponse)
-
-        if(submitResponse.status === 200) {
-            alert(submitResponse.res)
-            push('/');
-        }
+        await signUpPostData(formDataSubmit, window.origin);
     }
 
     const inputLoginClassName = `form__input ${isValidateLogin ? 'valid__input' : 'invalid__value'}`
@@ -77,11 +66,11 @@ export default function SignUpForm() {
                     {!isValidateLogin && (
   <div className="error-message">Invalid login. Please use only letters and numbers.</div>
 )}
-                    <input 
+                    <input
                         className={inputLoginClassName}
-                        type="text" 
-                        name="login" 
-                        id="login"  
+                        type="text"
+                        name="login"
+                        id="login"
                         placeholder="login"
                         value={login}
                         onChange={(e) => setLoginValidation(e)}
@@ -89,10 +78,10 @@ export default function SignUpForm() {
                 </div>
                 <div className="form__field">
                     <label htmlFor="email">Email</label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        id="email" 
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
                         placeholder="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -103,11 +92,11 @@ export default function SignUpForm() {
                     {!isValidatePassword && (
                         <div className="error-message">Invalid password.</div>
                     )}
-                    <input 
+                    <input
                         className={inputPasswordClassName}
-                        type="text" 
-                        name="password" 
-                        id="password" 
+                        type="text"
+                        name="password"
+                        id="password"
                         placeholder="password"
                         value={password}
                         onChange={(e) => setPasswordValidation(e)}

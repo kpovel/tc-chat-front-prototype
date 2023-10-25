@@ -1,33 +1,27 @@
 "use server";
 
-import axios, { AxiosError } from 'axios';
-import { signUpDataInterface } from './signUpForm';
+import { signUpDataInterface } from "./signUpForm";
 
-export async function signUpPostData(data: signUpDataInterface) {
-    const dataSubmit = JSON.stringify(data);
+export async function signUpPostData(
+  data: signUpDataInterface,
+  origin: string,
+) {
+  try {
+    const response = await fetch("http://138.68.69.149:8080/api/signup", {
+      body: JSON.stringify(data),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Originating-Host": origin,
+      },
+    });
 
-    try {
-        const response = await axios.post("http://138.68.69.149:8080/api/signup", dataSubmit, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        console.log('Response Data:', response.data);
+    console.log(response.json());
+    // todo: if ok, redirect to /validate-email page
 
-        const res = {
-            res: response.data,
-            status: response.status
-        }
+  } catch (error) {
+    console.error(`error msg - ${error}`);
 
-        console.log(response)
-
-        return res
-        
-      } catch (error) {
-        const axiosError = error as AxiosError;
-        console.error(`error msg - ${axiosError.message}`);
-
-        throw axiosError;
-      }
+    throw error;
+  }
 }
-
