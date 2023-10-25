@@ -1,5 +1,4 @@
-export const validateInput = (inputText: string, type:any) => {
-
+export const validateInput = (inputText: string, type: 'password' | 'login') => {
     const patterns = {
         password: /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,72}$/,
         login: /^[A-Za-z0-9]{3,50}$/,

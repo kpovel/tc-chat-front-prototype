@@ -1,6 +1,6 @@
 "use server";
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { signUpDataInterface } from './signUpForm';
 
 export async function signUpPostData(data: signUpDataInterface) {
@@ -19,12 +19,15 @@ export async function signUpPostData(data: signUpDataInterface) {
             status: response.status
         }
 
+        console.log(response)
+
         return res
         
       } catch (error) {
-        console.error(`error msg - ${error.message}`);
+        const axiosError = error as AxiosError;
+        console.error(`error msg - ${axiosError.message}`);
 
-        throw error;
+        throw axiosError;
       }
 }
 

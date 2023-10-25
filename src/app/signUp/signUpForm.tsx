@@ -66,7 +66,6 @@ export default function SignUpForm() {
     }
 
     const inputLoginClassName = `form__input ${isValidateLogin ? 'valid__input' : 'invalid__value'}`
-    // const inputEmailClassName = `form__input ${isValidateLogin ? 'valid__input' : 'invalid__value'}`
     const inputPasswordClassName = `form__input ${isValidatePassword ? 'valid__input' : 'invalid__value'}`
 
     return (

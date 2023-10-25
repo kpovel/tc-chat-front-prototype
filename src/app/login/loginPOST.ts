@@ -1,6 +1,6 @@
 "use server"
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { cookies } from "next/headers";
 import { loginDataInterface } from './loginForm';
 
@@ -38,8 +38,9 @@ export async function loginPostData(data: loginDataInterface) {
         return response.status
 
     } catch (error) {
-        console.error(`error msg - ${error.message}`);
+        const axiosError = error as AxiosError;
+        console.error(`error msg - ${axiosError.message}`);
 
-        throw error;
+        throw axiosError;
     }
 }
