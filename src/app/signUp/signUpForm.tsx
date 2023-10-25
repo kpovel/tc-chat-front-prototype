@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { signUpPostData } from './signUpPOST';
-import { useRouter } from 'next/navigation';
 import { validateInput } from '../../utils/inputValidations';
 
 export interface signUpDataInterface {
@@ -17,6 +16,7 @@ export default function SignUpForm() {
     const [password, setPassword] = useState('');
     const [isValidateLogin, setIsValidateLogin] = useState(true);
     const [isValidatePassword, setIsValidatePassword] = useState(true);
+    const [singupError, setSignupError] = useState("");
 
     const setLoginValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
         const isValidate = validateInput(e.target.value, 'login');
@@ -51,7 +51,8 @@ export default function SignUpForm() {
             password
         }
 
-        await signUpPostData(formDataSubmit, window.origin);
+        const error = await signUpPostData(formDataSubmit, window.origin);
+        setSignupError(error);
     }
 
     const inputLoginClassName = `form__input ${isValidateLogin ? 'valid__input' : 'invalid__value'}`
@@ -101,6 +102,9 @@ export default function SignUpForm() {
                         value={password}
                         onChange={(e) => setPasswordValidation(e)}
                         required/>
+                </div>
+                <div className="text-red-500">
+                  {singupError}
                 </div>
                 <button type="submit">Sign Up</button>
             </form>

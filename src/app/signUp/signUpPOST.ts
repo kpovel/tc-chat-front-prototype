@@ -1,11 +1,12 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { signUpDataInterface } from "./signUpForm";
 
 export async function signUpPostData(
   data: signUpDataInterface,
   origin: string,
-) {
+): Promise<string> {
   try {
     const response = await fetch("http://138.68.69.149:8080/api/signup", {
       body: JSON.stringify(data),
@@ -16,11 +17,14 @@ export async function signUpPostData(
       },
     });
 
-    console.log(response.json());
-    // todo: if ok, redirect to /validate-email page
+    if (response.ok) {
+      redirect("/validate-email");
+    }
 
+    // Since an API will change soon, I will treat the response as text for simplicity.
+    return await response.text();
   } catch (error) {
-    console.error(`error msg - ${error}`);
+    console.error("Signup error", error);
 
     throw error;
   }
