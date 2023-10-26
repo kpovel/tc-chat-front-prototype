@@ -65,8 +65,8 @@ export default function SignUpForm() {
                 <div className="form__field">
                     <label htmlFor="login">Login</label>
                     {!isValidateLogin && (
-  <div className="error-message">Invalid login. Please use only letters and numbers.</div>
-)}
+                        <div className="error-message">Invalid login. Please use only letters and numbers.</div>
+                    )}
                     <input
                         className={inputLoginClassName}
                         type="text"
