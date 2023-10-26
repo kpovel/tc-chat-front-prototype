@@ -16,6 +16,7 @@ export async function GET(
     `http://138.68.69.149:8080/api/validate-email/${context.params.code}`,
     {
       method: "PUT",
+      cache: "no-store",
     },
   );
 
@@ -26,6 +27,6 @@ export async function GET(
     redirect("/chat");
   }
 
-  const error = response.text();
+  const error = await response.text();
   return NextResponse.json(error);
 }
