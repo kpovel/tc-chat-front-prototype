@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { signUpPostData } from './signUpPOST';
-import { useRouter } from 'next/navigation';
 import { validateInput } from '../../utils/inputValidations';
 
 export interface signUpDataInterface {
@@ -12,20 +11,17 @@ export interface signUpDataInterface {
 }
 
 export default function SignUpForm() {
-
-    const { push } = useRouter();
-
     const [login, setLogin] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isValidateLogin, setIsValidateLogin] = useState(true);
     const [isValidatePassword, setIsValidatePassword] = useState(true);
+    const [singupError, setSignupError] = useState("");
 
     const setLoginValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
         const isValidate = validateInput(e.target.value, 'login');
 
         if(isValidate) {
-            
             setIsValidateLogin(true);
         } else {
             setIsValidateLogin(false)
@@ -55,14 +51,8 @@ export default function SignUpForm() {
             password
         }
 
-        const submitResponse = await signUpPostData(formDataSubmit);
-
-        console.log(submitResponse)
-
-        if(submitResponse.status === 200) {
-            alert(submitResponse.res)
-            push('/');
-        }
+        const error = await signUpPostData(formDataSubmit, window.origin);
+        setSignupError(error);
     }
 
     const inputLoginClassName = `form__input ${isValidateLogin ? 'valid__input' : 'invalid__value'}`
@@ -75,13 +65,13 @@ export default function SignUpForm() {
                 <div className="form__field">
                     <label htmlFor="login">Login</label>
                     {!isValidateLogin && (
-  <div className="error-message">Invalid login. Please use only letters and numbers.</div>
-)}
-                    <input 
+                        <div className="error-message">Invalid login. Please use only letters and numbers.</div>
+                    )}
+                    <input
                         className={inputLoginClassName}
-                        type="text" 
-                        name="login" 
-                        id="login"  
+                        type="text"
+                        name="login"
+                        id="login"
                         placeholder="login"
                         value={login}
                         onChange={(e) => setLoginValidation(e)}
@@ -89,10 +79,10 @@ export default function SignUpForm() {
                 </div>
                 <div className="form__field">
                     <label htmlFor="email">Email</label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        id="email" 
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
                         placeholder="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -103,15 +93,18 @@ export default function SignUpForm() {
                     {!isValidatePassword && (
                         <div className="error-message">Invalid password.</div>
                     )}
-                    <input 
+                    <input
                         className={inputPasswordClassName}
-                        type="text" 
-                        name="password" 
-                        id="password" 
+                        type="text"
+                        name="password"
+                        id="password"
                         placeholder="password"
                         value={password}
                         onChange={(e) => setPasswordValidation(e)}
                         required/>
+                </div>
+                <div className="text-red-500">
+                  {singupError}
                 </div>
                 <button type="submit">Sign Up</button>
             </form>
