@@ -22,8 +22,14 @@ export async function GET(
 
   if (response.ok) {
     const json = (await response.json()) as ValidateResponse;
-    cookies().set("jwtAccessToken", json.jwtAccessToken);
-    cookies().set("jwtRefreshToken", json.jwtRefreshToken);
+    cookies().set("jwtAccessToken", json.jwtAccessToken, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 150, // 150d
+    });
+    cookies().set("jwtRefreshToken", json.jwtRefreshToken, {
+      path: "/",
+      maxAge: 60 * 15, // 15m
+    });
     redirect("/chat");
   }
 
