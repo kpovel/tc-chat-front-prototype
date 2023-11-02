@@ -13,7 +13,7 @@ export async function GET(
   context: { params: { code: string } },
 ) {
   const response = await fetch(
-    `http://138.68.69.149:8080/api/validate-email/${context.params.code}`,
+    `${process.env.SERVER_HOST}/api/validate-email/${context.params.code}`,
     {
       method: "PUT",
       cache: "no-store",

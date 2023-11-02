@@ -8,7 +8,7 @@ export async function loginPostData(data: loginDataInterface) {
     const dataSubmit = JSON.stringify(data);
 
     try {
-        const response = await axios.post("http://138.68.69.149:8080/api/login", dataSubmit, {
+        const response = await axios.post(`${process.env.SERVER_HOST}/api/login`, dataSubmit, {
             headers: {
                 'Content-Type': 'application/json'
             }

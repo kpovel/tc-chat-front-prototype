@@ -7,7 +7,7 @@ export async function signUpPostData(
   data: signUpDataInterface,
   origin: string,
 ): Promise<string> {
-  const response = await fetch("http://138.68.69.149:8080/api/signup", {
+  const response = await fetch(`${process.env.SERVER_HOST}/api/signup`, {
     body: JSON.stringify(data),
     method: "POST",
     headers: {
