@@ -19,7 +19,6 @@ export async function loginPostData(data: loginDataInterface): Promise<string> {
     },
     body: JSON.stringify(data),
   });
-  console.log(response);
 
   if (!response.ok) {
     return "Login error";
