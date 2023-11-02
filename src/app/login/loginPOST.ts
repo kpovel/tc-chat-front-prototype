@@ -1,46 +1,46 @@
-"use server"
+"use server";
 
-import axios, { AxiosError } from 'axios';
 import { cookies } from "next/headers";
-import { loginDataInterface } from './loginForm';
+import { loginDataInterface } from "./loginForm";
+import { JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } from "@/utils/cookiesName";
+import { redirect } from "next/navigation";
 
-export async function loginPostData(data: loginDataInterface) {
-    const dataSubmit = JSON.stringify(data);
+export type SuccessLoginResponse = {
+  type: "Bearer";
+  jwtAccessToken: string;
+  jwtRefreshToken: string;
+};
 
-    try {
-        const response = await axios.post(`${process.env.SERVER_HOST}/api/login`, dataSubmit, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log('Response Data:', response.data);
+export async function loginPostData(data: loginDataInterface): Promise<string> {
+  const response = await fetch(`${process.env.SERVER_HOST}/api/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  console.log(response);
 
-        if(response.status === 200) {
-            const tokens = {
-                jwtAccessToken: response.data.jwtAccessToken,
-                jwtRefreshToken: response.data.jwtRefreshToken
-            }
+  if (!response.ok) {
+    return "Login error";
+  }
 
-            cookies().set({
-                name: 'jwtAccessToken',
-                value: response.data.jwtAccessToken,
-                httpOnly: true,
-                path: '/',
-              })
-            cookies().set({
-                name: 'jwtRefreshToken',
-                value: response.data.jwtRefreshToken,
-                httpOnly: true,
-                path: '/',
-            })
-        }
+  const tokens = await response.json() as SuccessLoginResponse;
 
-        return response.status
+  cookies().set({
+    name: JWT_ACCESS_TOKEN,
+    value: tokens.jwtAccessToken,
+    maxAge: 60 * 15, // 15m
+    httpOnly: true,
+    path: "/",
+  });
+  cookies().set({
+    name: JWT_REFRESH_TOKEN,
+    value: tokens.jwtRefreshToken,
+    maxAge: 60 * 60 * 24 * 150, // 150d
+    httpOnly: true,
+    path: "/",
+  });
 
-    } catch (error) {
-        const axiosError = error as AxiosError;
-        console.error(`error msg - ${axiosError.message}`);
-
-        throw axiosError;
-    }
+  redirect("/chat");
 }
