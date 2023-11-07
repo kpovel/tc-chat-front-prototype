@@ -13,7 +13,7 @@ export async function GET(
   context: { params: { code: string } },
 ) {
   const response = await fetch(
-    `http://138.68.69.149:8080/api/validate-email/${context.params.code}`,
+    `${process.env.SERVER_HOST}/api/validate-email/${context.params.code}`,
     {
       method: "PUT",
       cache: "no-store",
@@ -22,8 +22,14 @@ export async function GET(
 
   if (response.ok) {
     const json = (await response.json()) as ValidateResponse;
-    cookies().set("jwtAccessToken", json.jwtAccessToken);
-    cookies().set("jwtRefreshToken", json.jwtRefreshToken);
+    cookies().set("jwtAccessToken", json.jwtAccessToken, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 150, // 150d
+    });
+    cookies().set("jwtRefreshToken", json.jwtRefreshToken, {
+      path: "/",
+      maxAge: 60 * 15, // 15m
+    });
     redirect("/chat");
   }
 

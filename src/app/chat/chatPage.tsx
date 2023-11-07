@@ -1,17 +1,12 @@
-'use client'
+"use server";
 
-import { useEffect } from 'react';
-import { checkCookie } from './checkCookie';
+import { RegenerateAccessToken } from "./updateRefreshToken";
 
-export default function Chat() {
-
-    useEffect(() => {
-        checkCookie()
-    }, [])
-
-    return (
-        <div className="chat__wrapper">
-            <h1>welcome to our chat page</h1>
-        </div>
-    )
+export async function ChatList() {
+  return (
+    <>
+      <RegenerateAccessToken />
+      <h1>welcome to our chat page</h1>
+    </>
+  );
 }

@@ -1,9 +1,9 @@
-import Chat from './chatPage';
+import { ChatList } from "./chatPage";
 
-export default function ChatPage() {
-    return (
-        <div className="chat">
-            <Chat/>
-        </div>
-    )
+export default async function Chat() {
+  return (
+    <div>
+      <ChatList />
+    </div>
+  );
 }
